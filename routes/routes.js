@@ -1,5 +1,5 @@
 
-var show = require("../controllers/show.js");
+var ctrl = require("../controllers/masterCtrl.js");
 const config = require("../config.json");
 
 module.exports = function(app) {
