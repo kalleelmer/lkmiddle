@@ -1,8 +1,9 @@
 
-show = require("../controllers/show.js");
+var show = require("../controllers/show.js");
+const config = require("../config.json");
 
 module.exports = function(app) {
 
-  app.route('/api/show').get(show.getShows);
+  app.route(config.prefix + '/show').get(show.getShows);
 
 };
