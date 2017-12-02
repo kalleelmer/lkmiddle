@@ -1,6 +1,7 @@
 'use strict';
 
 var api = require('../api.js')
+var swish = require('../swish.js')
 
 exports.getShows = function(req, res) {
 
@@ -76,12 +77,21 @@ exports.getTicket = function(req, res){
 }
 
 exports.postTicket = function(req, res){
-  console.log(req.body);
   api.post("/desk/orders/" + req.params.id + "/tickets",  req.body, function(response, error) {
     if (error) {
       res.send(error)
     } else {
       res.send(response);
     }
+  });
+
+}
+
+exports.payOrder = function(req, res) {
+  swish.pay(function(data) {
+
+    swish.getPaymentInfo(data.headers.location, function(d) {
+      res.send(d.body);
+    })
   });
 }
