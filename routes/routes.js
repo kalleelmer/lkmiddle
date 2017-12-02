@@ -4,12 +4,18 @@ const config = require("../config.json");
 
 module.exports = function(app) {
 
-  app.route(config.prefix + '/shows').get(show.getShows);
+  app.route(config.prefix + '/shows').get(ctrl.getShows);
 
-  app.route(config.prefix + '/shows/:id/categories').get(show.getCategories);
+  app.route(config.prefix + '/shows/:id/categories').get(ctrl.getCategories);
 
-  app.route(config.prefix + '/shows/:id/performances').get(show.getPerformances);
+  app.route(config.prefix + '/shows/:id/performances').get(ctrl.getPerformances);
 
-  app.route(config.prefix + '/shows/:id/rates').get(show.getRates);
+  app.route(config.prefix + '/shows/:id/rates').get(ctrl.getRates);
+
+  app.route(config.prefix + '/order/:id').get(ctrl.getOrder);
+
+  app.route(config.prefix + '/order/create').get(ctrl.createOrder);
+
+  app.route(config.prefix + '/order/:id/tickets').get(ctrl.getTicket).post(ctrl.postTicket);
 
 };

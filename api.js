@@ -13,6 +13,9 @@ exports.get = function(url, data, callback) {
     body: data
   }
 
+  console.log("Get request to: " + options.url);
+  console.log("Data: " + options.body);
+
   request(options, function(error, data, response) {
     callback(data.body, error);
   });
@@ -31,6 +34,9 @@ exports.post = function(url, data, callback) {
     body: data
   }
 
+  console.log("Post request to: " + options.url);
+  console.log("Data: " + options.body);
+
   request(options, function(error, data, response) {
     callback(data.body, error);
   });
@@ -48,6 +54,9 @@ exports.put = function(url, data, callback) {
     json: true,
     body: data
   }
+
+  console.log("Put request to: " + options.url);
+  console.log("Data: " + options.body);
 
   request(options, function(error, data, response) {
     callback(data.body, error);
