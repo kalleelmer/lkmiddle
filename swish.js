@@ -1,26 +1,26 @@
 var fs = require('fs'),
   path = require('path'),
   pfxFilePath = path.resolve(__dirname, './Testcertifikat/PKCS12/1231181189.p12'),
-  request = require('request');
+  request = require('request'),
+  config = require('./config.json');
 
-exports.pay = function(callback) {
+exports.pay = function(amount, orderid, payerAlias, callback) {
 
   var data = {
-    payeePaymentReference: "0123456789",
-    callbackUrl: "https://malmoseglarskola.se",
-    payerAlias: "46722347002",
-    payeeAlias: "1231181189",
-    amount: "100",
+    payeePaymentReference: orderid,
+    callbackUrl: config.swishCallbackUrl,
+    payerAlias: payerAlias,
+    payeeAlias: config.swishNumber,
+    amount: amount,
     currency: "SEK",
-    message: "Kingston USB Flash Drive 8 GB"
+    message: config.swishMessage
   }
 
   var options = {
     url: 'HTTPS://mss.swicpc.bankgirot.se/swish-cpcapi/api/v1/paymentrequests/',
     agentOptions: {
-        // Or use `pfx` property replacing `cert` and `key` when using private key, certificate and CA certs in PFX or PKCS12 format:
         pfx: fs.readFileSync(pfxFilePath),
-        passphrase: 'swish'
+        passphrase: config.swishPassword
     },
     method: 'POST',
     headers: {
@@ -41,7 +41,6 @@ exports.pay = function(callback) {
 }
 
 exports.getPaymentInfo = function(id, callback) {
-
 
   var options = {
     url: id,

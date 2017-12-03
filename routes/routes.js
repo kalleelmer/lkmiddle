@@ -18,6 +18,8 @@ module.exports = function(app) {
 
   app.route(config.prefix + '/order/:id/tickets').get(ctrl.getTicket).post(ctrl.postTicket);
 
-  app.route(config.prefix + '/order/:id/pay').get(ctrl.payOrder);
+  app.route(config.prefix + '/order/:id/pay/swish').post(ctrl.payOrderWithSwish);
+
+  app.route(config.prefix + '/order/:id/pay/bambora').post(ctrl.payOrderWithBambora);
 
 };
