@@ -62,3 +62,5 @@ typings/
 
 bamboraApi.txt
 bamboraToken.json
+
+/nodemon.json

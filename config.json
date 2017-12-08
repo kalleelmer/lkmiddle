@@ -1,9 +1,0 @@
-{
-	"url": "https://api-dev.lkticket.net",
-	"token": "Token 9kjgiaccupr125qf6ilc5i8674",
-  "prefix": "/middle",
-	"swishPassword": "swish",
-	"swishCallbackUrl": "https://www.malmoseglarskola.se",
-	"swishMessage": "Lundarkarnevalen",
-	"swishNumber": "1231181189"
-}

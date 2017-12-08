@@ -1,0 +1,11 @@
+{
+	"env": {
+		"API_URL": "https://api-dev.lkticket.net",
+		"API_TOKEN": "9kjgiaccupr125qf6ilc5i8674",
+		"PREFIX": "/middle",
+		"SWISH_PASSWORD": "swish",
+		"SWISH_CALLBACK": "https://www.malmoseglarskola.se",
+		"SWISH_MESSAGE": "Lundakarnevalen",
+		"SWISH_NUMBER": "1231181189"
+	}
+}
