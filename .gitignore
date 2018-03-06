@@ -64,3 +64,5 @@ bamboraApi.txt
 bamboraToken.json
 
 /nodemon.json
+
+/default/dev.json
