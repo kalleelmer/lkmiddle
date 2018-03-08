@@ -2,7 +2,6 @@
 	"env": {
 		"API_URL": "https://api-dev.lkticket.net",
 		"API_TOKEN": "",
-		"PREFIX": "/middle",
 		"SWISH_PASSWORD": "",
 		"SWISH_CALLBACK": "https://www.malmoseglarskola.se",
 		"SWISH_MESSAGE": "Lundakarnevalen",
