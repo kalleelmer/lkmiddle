@@ -6,7 +6,7 @@ exports.get = function(url, data, callback) {
 		url : process.env.API_URL + url,
 		method : 'GET',
 		headers : {
-			'Authorization' : process.env.API_TOKEN,
+			'Authorization' : "Token " + process.env.API_TOKEN,
 		},
 		json : true,
 		body : data
@@ -27,7 +27,7 @@ exports.post = function(url, data, callback) {
 		url : process.env.API_URL + url,
 		method : 'POST',
 		headers : {
-			'Authorization' : process.env.API_TOKEN,
+			'Authorization' : "Token " + process.env.API_TOKEN,
 		},
 		json : true,
 		body : data
@@ -48,7 +48,7 @@ exports.put = function(url, data, callback) {
 		url : process.env.API_URL + url,
 		method : 'PUT',
 		headers : {
-			'Authorization' : process.env.API_TOKEN,
+			'Authorization' : "Token " + process.env.API_TOKEN,
 		},
 		json : true,
 		body : data
