@@ -4,6 +4,8 @@ module.exports = function(app) {
 
 	app.route('/shows').get(ctrl.getShows);
 
+	app.route('/shows/:id').get(ctrl.getShow);
+
 	app.route('/shows/:id/categories').get(ctrl.getCategories);
 
 	app.route('/shows/:id/performances').get(ctrl.getPerformances);

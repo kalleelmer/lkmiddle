@@ -66,3 +66,8 @@ bamboraToken.json
 /nodemon.json
 
 /default/dev.json
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
