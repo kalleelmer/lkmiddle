@@ -102,7 +102,8 @@ exports.getTicket = function(req, res) {
 }
 
 exports.postTicket = function(req, res) {
-	req.body.profile_id = process.env.PROFILE_ID;
+	req.body.profile_id = +process.env.PROFILE_ID;
+	console.log(req.body);
 	api.post("/desk/orders/" + req.params.id + "/tickets", req.body, function(
 		response, error) {
 		if (error) {
