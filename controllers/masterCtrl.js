@@ -37,6 +37,17 @@ exports.getPerformances = function(req, res) {
 	});
 }
 
+exports.getPerformance = function(req, res) {
+	api.get("/desk/performances/" + req.params.id, {}, function(
+		response, error) {
+		if (error) {
+			res.send(error)
+		} else {
+			res.send(response);
+		}
+	});
+}
+
 exports.getCategories = function(req, res) {
 	api.get("/desk/shows/" + req.params.id + "/categories", {}, function(
 		response, error) {
@@ -134,7 +145,7 @@ exports.payOrderWithBambora = function(req, res) {
 	if (req.body.amount) {
 		bambora.pay(req.body.amount, req.params.id, function(response) {
 			res.send(response.body);
-		});
+		}, req.originalUrl);
 	} else {
 		res.status(400).send("400 Bad request");
 	}
