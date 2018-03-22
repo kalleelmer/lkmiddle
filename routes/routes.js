@@ -10,7 +10,7 @@ module.exports = function(app) {
 
 	app.route('/shows/:id/performances').get(ctrl.getPerformances);
 
-	app.route('/performances/:id').get(ctrl.getPerformances);
+	app.route('/performances/:id').get(ctrl.getPerformance);
 
 	app.route('/shows/:id/rates').get(ctrl.getRates);
 
