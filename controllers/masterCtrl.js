@@ -38,7 +38,7 @@ exports.getPerformances = function(req, res) {
 }
 
 exports.getCategories = function(req, res) {
-	api.get("/desl/shows/" + req.params.id + "/categories", {}, function(
+	api.get("/desk/shows/" + req.params.id + "/categories", {}, function(
 		response, error) {
 		if (error) {
 			res.send(error)
