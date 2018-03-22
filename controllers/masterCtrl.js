@@ -101,9 +101,9 @@ exports.postTicket = function(req, res) {
 	});
 
 }
-/*
+
 exports.removeTicket = function(req, res) {
-	api.delete("/desk/orders/" + req.params.id + "/tickets/" + req.ticket, {}, function(response, error) {
+	api.delete("/desk/orders/" + req.params.id + "/tickets/" + req.params.ticket, {}, function(response, error) {
 		if (error) {
 			res.send(error)
 		} else {
@@ -112,7 +112,7 @@ exports.removeTicket = function(req, res) {
 	});
 
 }
-*/
+
 exports.payOrderWithSwish = function(req, res) {
 
 	if (req.body.amount && req.body.payerAlias) {
