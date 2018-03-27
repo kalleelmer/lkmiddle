@@ -6,7 +6,7 @@ var bambora = require('../bambora.js')
 
 exports.getShows = function(req, res) {
 
-	api.get("/desk/shows", {}, function(response, error) {
+	api.get("/desk/shows", {}, function(response, error, status) {
 		if (error) {
 			res.send(error)
 		} else {
@@ -17,7 +17,7 @@ exports.getShows = function(req, res) {
 };
 
 exports.getShow = function(req, res) {
-	api.get("/desk/shows/" + req.params.id, {}, function(response, error) {
+	api.get("/desk/shows/" + req.params.id, {}, function(response, error, status) {
 		if (error) {
 			res.send(error)
 		} else {
@@ -28,7 +28,7 @@ exports.getShow = function(req, res) {
 
 exports.getPerformances = function(req, res) {
 	api.get("/desk/shows/" + req.params.id + "/performances", {}, function(
-		response, error) {
+		response, error, status) {
 		if (error) {
 			res.send(error)
 		} else {
@@ -39,7 +39,7 @@ exports.getPerformances = function(req, res) {
 
 exports.getPerformance = function(req, res) {
 	api.get("/desk/performances/" + req.params.id, {}, function(
-		response, error) {
+		response, error, status) {
 		if (error) {
 			res.send(error)
 		} else {
@@ -50,7 +50,7 @@ exports.getPerformance = function(req, res) {
 
 exports.getCategories = function(req, res) {
 	api.get("/desk/shows/" + req.params.id + "/categories", {}, function(
-		response, error) {
+		response, error, status) {
 		if (error) {
 			res.send(error)
 		} else {
@@ -71,7 +71,7 @@ exports.getRates = function(req, res) {
 }
 
 exports.createOrder = function(req, res) {
-	api.get("/desk/orders/create", {}, function(response, error) {
+	api.get("/desk/orders/create", {}, function(response, error, status) {
 		if (error) {
 			res.send(error)
 		} else {
@@ -81,7 +81,7 @@ exports.createOrder = function(req, res) {
 }
 
 exports.getOrder = function(req, res) {
-	api.get("/desk/orders/" + req.params.id, {}, function(response, error) {
+	api.get("/desk/orders/" + req.params.id, {}, function(response, error, status) {
 		if (error) {
 			res.send(error)
 		} else {
@@ -92,7 +92,7 @@ exports.getOrder = function(req, res) {
 
 exports.getTicket = function(req, res) {
 	api.get("/desk/orders/" + req.params.id + "/tickets", {}, function(
-		response, error) {
+		response, error, status) {
 		if (error) {
 			res.send(error)
 		} else {
@@ -105,10 +105,11 @@ exports.postTicket = function(req, res) {
 	req.body.profile_id = +process.env.PROFILE_ID;
 	console.log(req.body);
 	api.post("/desk/orders/" + req.params.id + "/tickets", req.body, function(
-		response, error) {
+		response, error, status) {
 		if (error) {
 			res.send(error)
 		} else {
+			res.status(status);
 			res.send(response);
 		}
 	});
@@ -116,7 +117,7 @@ exports.postTicket = function(req, res) {
 }
 
 exports.removeTicket = function(req, res) {
-	api.delete("/desk/orders/" + req.params.id + "/tickets/" + req.params.ticket, {}, function(response, error) {
+	api.delete("/desk/orders/" + req.params.id + "/tickets/" + req.params.ticket, {}, function(response, error, status) {
 		if (error) {
 			res.send(error)
 		} else {
@@ -146,16 +147,27 @@ exports.payOrderWithBambora = function(req, res) {
 
 	console.log(req.headers);
 
-	// TODO:
+	api.get("/desk/orders/" + req.params.id + "/tickets", {}, function(
+		response, error, status) {
+		if (error) {
+			res.send(error)
+		} else {
 
-	if (req.body.amount) {
-		bambora.pay(req.body.amount * 100, req.params.id, function(response) {
-			res.send(response.body);
-		}, "https://" + req.headers.host);
-	} else {
-		res.status(400).send("400 Bad request");
-	}
+			var totalAmount = 0;
 
+			for (var i = 0; i < response.data; i++) {
+				totalAmount+= response.data[i].price;
+			}
+
+			if (req.body.amount == totalAmount) {
+				bambora.pay(req.body.amount * 100, req.params.id, function(response) {
+					res.send(response.body);
+				}, "https://" + req.headers.host);
+			} else {
+				res.status(400).send("400 Bad request");
+			}
+		}
+	});
 }
 
 exports.acceptPayment = function(req, res) {
@@ -170,7 +182,7 @@ exports.cancelPayment = function(req, res) {
 
 exports.getPrices = function(req, res) {
 	api.get("/desk/categories/" + req.params.id + "/prices", {}, function(
-		response, error) {
+		response, error, status) {
 		if (error) {
 			res.send(error)
 		} else {
