@@ -146,10 +146,12 @@ exports.payOrderWithBambora = function(req, res) {
 
 	console.log(req.headers);
 
+	// TODO:
+
 	if (req.body.amount) {
-		bambora.pay(req.body.amount, req.params.id, function(response) {
+		bambora.pay(req.body.amount * 100, req.params.id, function(response) {
 			res.send(response.body);
-		}, "http://" + req.headers.host);
+		}, "https://" + req.headers.host);
 	} else {
 		res.status(400).send("400 Bad request");
 	}
