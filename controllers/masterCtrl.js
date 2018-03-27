@@ -144,12 +144,24 @@ exports.payOrderWithSwish = function(req, res) {
 
 exports.payOrderWithBambora = function(req, res) {
 
+	console.log(req.headers);
+
 	if (req.body.amount) {
 		bambora.pay(req.body.amount, req.params.id, function(response) {
 			res.send(response.body);
-		}, req.originalUrl);
+		}, "http://" + req.headers.host);
 	} else {
 		res.status(400).send("400 Bad request");
 	}
+
+}
+
+exports.acceptPayment = function(req, res) {
+	//TODO Hantera betalning
+	res.redirect("http://127.0.0.1/#/thanks");
+	res.send();
+}
+
+exports.cancelPayment = function(req, res) {
 
 }

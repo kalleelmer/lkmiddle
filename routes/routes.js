@@ -26,4 +26,8 @@ module.exports = function(app) {
 
 	app.route('/order/:id/pay/bambora').post(ctrl.payOrderWithBambora);
 
+	app.route('/accept').get(ctrl.acceptPayment);
+
+	app.route('/cancel').get(ctrl.cancelPayment);
+
 };
