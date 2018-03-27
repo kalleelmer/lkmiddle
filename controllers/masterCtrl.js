@@ -167,3 +167,14 @@ exports.acceptPayment = function(req, res) {
 exports.cancelPayment = function(req, res) {
 
 }
+
+exports.getPrices = function(req, res) {
+	api.get("/desk/categories/" + req.params.id + "/prices", {}, function(
+		response, error) {
+		if (error) {
+			res.send(error)
+		} else {
+			res.send(response);
+		}
+	});
+}
