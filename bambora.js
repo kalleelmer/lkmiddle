@@ -3,15 +3,17 @@ var request = require('request')
 exports.pay = function(amount, id, callback, url) {
 
 	var data = {
-		"order" : {
-			"id" : id,
-			"amount" : amount,
-			"currency" : "SEK",
+		"order": {
+			"id": id,
+			"amount": amount,
+			"currency": "SEK",
 		},
-		"url" : {
-			"accept" : url + "/accept",
-			"cancel" : url + "/cancel",
-			"callback" : "https://middle-dev.lkticket.net/callback"
+		"url": {
+			"accept": url + "/accept",
+			"cancel": url + "/cancel",
+			"callbacks": [{
+				"url": url + "/callback"
+			}],
 		}
 	}
 
@@ -19,14 +21,14 @@ exports.pay = function(amount, id, callback, url) {
 	console.log(data);
 
 	var options = {
-		url : 'https://api.v1.checkout.bambora.com/sessions',
-		method : 'POST',
-		headers : {
-			'Content-Type' : 'application/json',
-			'Authorization' : 'Basic ' + process.env.BAMBORA_TOKEN,
+		url: 'https://api.v1.checkout.bambora.com/sessions',
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+			'Authorization': 'Basic ' + process.env.BAMBORA_TOKEN,
 		},
-		json : true,
-		body : data,
+		json: true,
+		body: data,
 	}
 
 	request(options, function(error, response, data) {
