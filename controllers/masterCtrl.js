@@ -136,7 +136,7 @@ exports.postTicket = function(req, res) {
 						res.status(status);
 						res.send(response);
 					}
-					
+
 				});
 			} else {
 				res.status(401).send("Unauthorized");
@@ -206,19 +206,19 @@ exports.callback = function(req, res) {
 	var amount = req.query.amount;
 	var orderid = req.query.orderid;
 	var hash = req.query.hash;
-	var MD5_KEY = process.env.MD5_KEY;
-	var getcheck = false;
+	var callback = process.env.BAMBORA_CALLBACK_TOKEN;
+	var checkUndefined = false;
 
 	// TODO: Ev kolla amount mot Core
 
-	if(amount === undefined || orderid === undefined || MD5_KEY === undefined){
-		res.status(401).send("");
-		getcheck = true;
+	if(amount === undefined || orderid === undefined || callback === undefined){
+		res.status(401).send("Unauthorized");
+		checkUndefined = true;
 	}
 
-	var concatenatedValues = amount.concat(orderid).concat(MD5_KEY);
+	var concatenatedValues = amount.concat(orderid).concat(callback);
 
-	if (md5(concatenatedValues) == hash && getcheck) {
+	if (md5(concatenatedValues) == hash && checkUndefined) {
 		api.post("/desk/orders/" + orderid + "/payments",
 			{method : "cash",
 			amount : amount,
