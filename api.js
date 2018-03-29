@@ -13,7 +13,8 @@ exports.get = function(url, data, callback) {
 	}
 
 	console.log("Get request to: " + options.url);
-	console.log("Data: " + JSON.stringify(options.body));
+	console.log("Data: ");
+	console.log(data);
 
 	request(options, function(error, data, response) {
 		callback(data.body, error, data.statusCode);

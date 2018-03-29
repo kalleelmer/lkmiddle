@@ -233,7 +233,7 @@ exports.callback = function(req, res) {
 	if (md5(concatenatedValues) == hash) {
 		api.post("/desk/orders/" + orderid + "/payments",
 			{method : "cash",
-			amount : amount,
+			amount : amount/100,
 			reference : "Kristoffer",
 			profile_id : +process.env.PROFILE_ID
 		}, function(response, error, status) {
