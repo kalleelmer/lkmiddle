@@ -16,7 +16,7 @@ module.exports = function(app) {
 
 	app.route('/order/:id').get(ctrl.getOrder);
 
-	app.route('/order/create').get(ctrl.createOrder);
+	app.route('/newOrder').get(ctrl.createOrder);
 
 	app.route('/order/:id/tickets').get(ctrl.getTicket).post(ctrl.postTicket);
 

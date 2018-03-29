@@ -128,7 +128,7 @@ exports.postTicket = function(req, res) {
 		} else {
 			if (response.identifier == req.query.identifier) {
 
-				api.post("/desk/orders/" + req.params.id + "/tickets", req.body, function(
+				api.post("/desk/orders/" + req.params.id + "/tickets?location=test", req.body, function(
 					response, error, status) {
 					if (error) {
 						res.send(error)
