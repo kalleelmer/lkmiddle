@@ -10,11 +10,13 @@ exports.pay = function(amount, id, callback, url) {
 		},
 		"url": {
 			"accept": url + "/accept",
+			"immediateredirecttoaccept":1,
 			"cancel": url + "/cancel",
 			"callbacks": [{
 				"url": url + "/callback"
 			}],
-		}
+		},
+		"instantcaptureamount" : amount,
 	}
 
 	console.log("Bambora: ");
