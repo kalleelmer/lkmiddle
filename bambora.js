@@ -13,7 +13,7 @@ exports.pay = function(amount, id, callback, url) {
 		"url" : {
 			"accept" : url + "/accept",
 			"cancel" : url + "/cancel",
-			"callback" : url + "/callback"
+			"callback" : "https://middle-dev.lkticket.net/callback"
 		}
 	}
 
