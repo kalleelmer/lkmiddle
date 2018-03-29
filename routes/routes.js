@@ -30,6 +30,8 @@ module.exports = function(app) {
 
 	app.route('/cancel').get(ctrl.cancelPayment);
 
+	app.route('/callback').get(ctrl.callback);
+
 	app.route('/categories/:id/prices').get(ctrl.getPrices);
 
 };

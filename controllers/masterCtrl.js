@@ -3,6 +3,7 @@
 var api = require('../api.js');
 var swish = require('../swish.js');
 var bambora = require('../bambora.js')
+var md5 = require('md5');
 
 exports.getShows = function(req, res) {
 
@@ -85,32 +86,62 @@ exports.getOrder = function(req, res) {
 		if (error) {
 			res.send(error)
 		} else {
-			res.send(response);
+			if (response.identifier == req.query.identifier) {
+				res.send(response);
+			} else {
+				res.status(401).send("Unauthorized");
+			}
+
 		}
 	});
 }
 
 exports.getTicket = function(req, res) {
-	api.get("/desk/orders/" + req.params.id + "/tickets", {}, function(
-		response, error, status) {
+
+	api.get("/desk/orders/" + req.params.id, {}, function(response, error, status) {
 		if (error) {
 			res.send(error)
 		} else {
-			res.send(response);
+			if (response.identifier == req.query.identifier) {
+				api.get("/desk/orders/" + req.params.id + "/tickets", {}, function(
+					response, error, status) {
+					if (error) {
+						res.send(error)
+					} else {
+						res.send(response);
+					}
+				});
+			} else {
+				res.status(401).send("Unauthorized");
+			}
+
 		}
 	});
 }
 
 exports.postTicket = function(req, res) {
 	req.body.profile_id = +process.env.PROFILE_ID;
-	console.log(req.body);
-	api.post("/desk/orders/" + req.params.id + "/tickets", req.body, function(
-		response, error, status) {
+
+	api.get("/desk/orders/" + req.params.id, {}, function(response, error, status) {
 		if (error) {
 			res.send(error)
 		} else {
-			res.status(status);
-			res.send(response);
+			if (response.identifier == req.query.identifier) {
+
+				api.post("/desk/orders/" + req.params.id + "/tickets", req.body, function(
+					response, error, status) {
+					if (error) {
+						res.send(error)
+					} else {
+						res.status(status);
+						res.send(response);
+					}
+					
+				});
+			} else {
+				res.status(401).send("Unauthorized");
+			}
+
 		}
 	});
 
@@ -170,13 +201,46 @@ exports.payOrderWithBambora = function(req, res) {
 	});
 }
 
+exports.callback = function(req, res) {
+
+	var amount = req.query.amount;
+	var orderid = req.query.orderid;
+	var hash = req.query.hash;
+	var MD5_KEY = process.env.MD5_KEY;
+	var getcheck = false;
+
+	// TODO: Ev kolla amount mot Core
+
+	if(amount === undefined || orderid === undefined || MD5_KEY === undefined){
+		res.status(401).send("");
+		getcheck = true;
+	}
+
+	var concatenatedValues = amount.concat(orderid).concat(MD5_KEY);
+
+	if (md5(concatenatedValues) == hash && getcheck) {
+		api.post("/desk/orders/" + orderid + "/payments",
+			{method : "cash",
+			amount : amount,
+			reference : "Kristoffer",
+			profile_id : +process.env.PROFILE_ID
+		}, function(response, error, status) {
+			res.status(status).send();
+		});
+	} else {
+		res.status(401).send("Unauthorized");
+	}
+
+}
+
 exports.acceptPayment = function(req, res) {
-	//TODO Hantera betalning
 	res.redirect("http://127.0.0.1/#/thanks");
 	res.send();
 }
 
 exports.cancelPayment = function(req, res) {
+
+
 
 }
 
