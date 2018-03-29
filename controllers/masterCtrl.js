@@ -176,8 +176,6 @@ exports.payOrderWithSwish = function(req, res) {
 
 exports.payOrderWithBambora = function(req, res) {
 
-	console.log(req.headers);
-
 	api.get("/desk/orders/" + req.params.id + "/tickets", {}, function(
 		response, error, status) {
 		if (error) {
@@ -186,11 +184,11 @@ exports.payOrderWithBambora = function(req, res) {
 
 			var totalAmount = 0;
 
-			for (var i = 0; i < response.data; i++) {
-				totalAmount+= response.data[i].price;
+			for (var i = 0; i < response.length; i++) {
+				totalAmount+= response[i].price;
 			}
 
-			//// TODO: FUNGERAR EJ!!
+			console.log(totalAmount);
 
 			if (req.body.amount == totalAmount) {
 				bambora.pay(req.body.amount * 100, req.params.id, function(response) {
@@ -209,14 +207,13 @@ exports.callback = function(req, res) {
 	var orderid = req.query.orderid;
 	var hash = req.query.hash;
 	var callback = process.env.BAMBORA_CALLBACK_TOKEN;
-	var checkUndefined = false;
 
 	// TODO: Ev kolla amount mot Core
 
-	// if(amount === undefined || orderid === undefined || callback === undefined){
-	// 	res.status(401).send("Unauthorized");
-	// 	checkUndefined = true;
-	// }
+	if(!amount || !orderid|| !callback){
+		res.status(401).send("Unauthorized");
+		return;
+	}
 
 	var concatenatedValues = amount.concat(orderid).concat(callback);
 	console.log(concatenatedValues);
