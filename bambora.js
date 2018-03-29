@@ -2,8 +2,6 @@ var request = require('request')
 
 exports.pay = function(amount, id, callback, url) {
 
-	console.log(amount);
-
 	var data = {
 		"order" : {
 			"id" : id,
@@ -16,6 +14,9 @@ exports.pay = function(amount, id, callback, url) {
 			"callback" : "https://middle-dev.lkticket.net/callback"
 		}
 	}
+
+	console.log("Bambora: ");
+	console.log(data);
 
 	var options = {
 		url : 'https://api.v1.checkout.bambora.com/sessions',

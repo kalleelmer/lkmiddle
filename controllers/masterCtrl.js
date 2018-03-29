@@ -203,6 +203,10 @@ exports.payOrderWithBambora = function(req, res) {
 
 exports.callback = function(req, res) {
 
+	console.log("callback init");
+	console.log(req.headers);
+	console.log(req.query);
+
 	var amount = req.query.amount;
 	var orderid = req.query.orderid;
 	var hash = req.query.hash;
