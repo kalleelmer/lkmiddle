@@ -204,7 +204,6 @@ exports.payOrderWithBambora = function(req, res) {
 exports.callback = function(req, res) {
 
 	console.log("callback init");
-	console.log(req.headers);
 	console.log(req.query);
 
 	var amount = req.query.amount;
@@ -222,9 +221,14 @@ exports.callback = function(req, res) {
 	var concatenatedValues = "";
 
 	for (var key in req.query) {
-		console.log(req.query[key]);
-		concatenatedValues+=req.query[key];
+		if (key != "hash") {
+			concatenatedValues+=req.query[key];
+		}
 	}
+
+	console.log(concatenatedValues);
+
+	concatenatedValues+=callback;
 
 	if (md5(concatenatedValues) == hash) {
 		api.post("/desk/orders/" + orderid + "/payments",
