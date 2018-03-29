@@ -219,8 +219,12 @@ exports.callback = function(req, res) {
 		return;
 	}
 
-	var concatenatedValues = amount.concat(orderid).concat(callback);
-	console.log(concatenatedValues);
+	var concatenatedValues = "";
+
+	for (var key in req.query) {
+		console.log(req.query[key]);
+		concatenatedValues+=req.query[key];
+	}
 
 	if (md5(concatenatedValues) == hash) {
 		api.post("/desk/orders/" + orderid + "/payments",
