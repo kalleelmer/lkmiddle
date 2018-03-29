@@ -213,14 +213,15 @@ exports.callback = function(req, res) {
 
 	// TODO: Ev kolla amount mot Core
 
-	if(amount === undefined || orderid === undefined || callback === undefined){
-		res.status(401).send("Unauthorized");
-		checkUndefined = true;
-	}
+	// if(amount === undefined || orderid === undefined || callback === undefined){
+	// 	res.status(401).send("Unauthorized");
+	// 	checkUndefined = true;
+	// }
 
 	var concatenatedValues = amount.concat(orderid).concat(callback);
+	console.log(concatenatedValues);
 
-	if (md5(concatenatedValues) == hash && checkUndefined) {
+	if (md5(concatenatedValues) == hash) {
 		api.post("/desk/orders/" + orderid + "/payments",
 			{method : "cash",
 			amount : amount,
