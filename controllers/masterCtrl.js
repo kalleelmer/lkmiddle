@@ -148,11 +148,23 @@ exports.postTicket = function(req, res) {
 }
 
 exports.removeTicket = function(req, res) {
-	api.delete("/desk/orders/" + req.params.id + "/tickets/" + req.params.ticket, {}, function(response, error, status) {
+
+	api.get("/desk/orders/" + req.params.id, {}, function(response, error, status) {
 		if (error) {
 			res.send(error)
 		} else {
-			res.send(response);
+			if (response.identifier == req.query.identifier) {
+				api.delete("/desk/orders/" + req.params.id + "/tickets/" + req.params.ticket, {}, function(response, error, status) {
+					if (error) {
+						res.send(error)
+					} else {
+						res.send(response);
+					}
+				});
+			} else {
+				res.status(401).send("Unauthorized");
+			}
+
 		}
 	});
 
@@ -246,7 +258,7 @@ exports.callback = function(req, res) {
 }
 
 exports.acceptPayment = function(req, res) {
-	res.redirect("http://127.0.0.1/#/thanks");
+	res.redirect("https://web-dev,lkticket.net/#/thanks");
 	res.send();
 }
 
