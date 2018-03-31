@@ -56,8 +56,6 @@ exports.getPerformance = function(req, res) {
 	});
 }
 
-
-
 exports.getCategories = function(req, res) {
 	api.get("/desk/shows/" + req.params.id + "/categories", {}, function(
 		response, error, status) {
@@ -163,7 +161,7 @@ exports.removeTicket = function(req, res) {
 			res.send(error)
 		} else {
 			if (response.identifier == req.query.identifier) {
-				api.delete("/desk/orders/" + req.params.id + "/tickets/" + req.params.ticket, {}, function(response, error, status) {
+				api.deleet("/desk/orders/" + req.params.id + "/tickets/" + req.params.ticket, {}, function(response, error, status) {
 					if (error) {
 						res.send(error)
 					} else {
