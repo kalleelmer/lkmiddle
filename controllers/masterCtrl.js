@@ -44,10 +44,19 @@ exports.getPerformance = function(req, res) {
 		if (error) {
 			res.send(error)
 		} else {
-			res.send(response);
+			api.get("/desk/performances/" + req.params.id + "/profiles/" + process.env.PROFILE_ID + "/availability",{}, function(response2, error2, status2) {
+				if (error) {
+					res.send(error);
+				} else {
+					response.availability = response2;
+					res.send(response);
+				}
+			});
 		}
 	});
 }
+
+
 
 exports.getCategories = function(req, res) {
 	api.get("/desk/shows/" + req.params.id + "/categories", {}, function(
@@ -258,7 +267,8 @@ exports.callback = function(req, res) {
 }
 
 exports.acceptPayment = function(req, res) {
-	res.redirect("https://web-dev,lkticket.net/#/thanks");
+	console.log(req.headers);
+	res.redirect("https://web-dev.lkticket.net/#/thanks");
 	res.send();
 }
 
