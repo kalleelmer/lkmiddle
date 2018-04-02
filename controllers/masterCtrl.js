@@ -7,7 +7,7 @@ var md5 = require('md5');
 
 exports.getShows = function(req, res) {
 
-	api.get("/desk/shows", {}, function(response, error, status) {
+	api.get("/desk/profiles/" + process.env.PROFILE_ID + "/shows", {}, function(response, error, status) {
 		if (error) {
 			res.send(error)
 		} else {
