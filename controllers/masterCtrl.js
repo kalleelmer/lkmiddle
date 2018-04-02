@@ -15,6 +15,7 @@ exports.getShows = function(req, res) {
 		}
 	});
 
+
 };
 
 exports.getShow = function(req, res) {
@@ -79,6 +80,7 @@ exports.getRates = function(req, res) {
 }
 
 exports.createOrder = function(req, res) {
+	res.header("Cache-Control", "no-cache");
 	api.get("/desk/orders/create", {}, function(response, error, status) {
 		if (error) {
 			res.send(error)
@@ -89,6 +91,7 @@ exports.createOrder = function(req, res) {
 }
 
 exports.getOrder = function(req, res) {
+	res.header("Cache-Control", "no-cache");
 	api.get("/desk/orders/" + req.params.id, {}, function(response, error, status) {
 		if (error) {
 			res.send(error)
@@ -98,13 +101,12 @@ exports.getOrder = function(req, res) {
 			} else {
 				res.status(401).send("Unauthorized");
 			}
-
 		}
 	});
 }
 
 exports.getTicket = function(req, res) {
-
+	res.header("Cache-Control", "no-cache");
 	api.get("/desk/orders/" + req.params.id, {}, function(response, error, status) {
 		if (error) {
 			res.send(error)
@@ -155,7 +157,7 @@ exports.postTicket = function(req, res) {
 }
 
 exports.removeTicket = function(req, res) {
-
+	res.header("Cache-Control", "no-cache");
 	api.get("/desk/orders/" + req.params.id, {}, function(response, error, status) {
 		if (error) {
 			res.send(error)
@@ -177,24 +179,8 @@ exports.removeTicket = function(req, res) {
 
 }
 
-exports.payOrderWithSwish = function(req, res) {
-
-	if (req.body.amount && req.body.payerAlias) {
-		swish.pay(req.body.amount, req.params.id, req.body.payerAlias,
-			function(data) {
-
-				swish.getPaymentInfo(data.headers.location, function(d) {
-					res.send(d.body);
-				})
-			});
-	} else {
-		res.status(400).send("400 Bad request");
-	}
-
-}
-
 exports.payOrderWithBambora = function(req, res) {
-
+	res.header("Cache-Control", "no-cache");
 	api.get("/desk/orders/" + req.params.id + "/tickets", {}, function(
 		response, error, status) {
 		if (error) {
@@ -221,7 +207,7 @@ exports.payOrderWithBambora = function(req, res) {
 }
 
 exports.callback = function(req, res) {
-
+	res.header("Cache-Control", "no-cache");
 	console.log("callback init");
 	console.log(req.query);
 
@@ -265,14 +251,13 @@ exports.callback = function(req, res) {
 }
 
 exports.acceptPayment = function(req, res) {
+	res.header("Cache-Control", "no-cache");
 	console.log(req.headers);
 	res.redirect("https://web-dev.lkticket.net/#/thanks");
 	res.send();
 }
 
 exports.cancelPayment = function(req, res) {
-
-
 
 }
 
@@ -282,6 +267,7 @@ exports.getPrices = function(req, res) {
 		if (error) {
 			res.send(error)
 		} else {
+
 			res.send(response);
 		}
 	});

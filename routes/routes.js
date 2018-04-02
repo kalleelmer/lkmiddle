@@ -22,8 +22,6 @@ module.exports = function(app) {
 
 	app.route('/order/:id/tickets/:ticket').delete(ctrl.removeTicket);
 
-	app.route('/order/:id/pay/swish').post(ctrl.payOrderWithSwish);
-
 	app.route('/order/:id/pay/bambora').post(ctrl.payOrderWithBambora);
 
 	app.route('/accept').get(ctrl.acceptPayment);
