@@ -181,6 +181,7 @@ exports.removeTicket = function(req, res) {
 
 exports.payOrderWithBambora = function(req, res) {
 	res.header("Cache-Control", "no-cache");
+	console.log(res.header);
 	api.get("/desk/orders/" + req.params.id + "/tickets", {}, function(
 		response, error, status) {
 		if (error) {
