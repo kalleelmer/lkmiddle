@@ -181,7 +181,35 @@ exports.removeTicket = function(req, res) {
 
 exports.payOrderWithBambora = function(req, res) {
 	res.header("Cache-Control", "no-cache");
-	console.log(res.header);
+
+	if (!req.body.customer.email || !req.body.customer.name || !req.body.customer.phone) {
+		res.status(400).send();
+		return;
+	}
+
+	var assignCartToCustomer = function(id, callback) {
+		api.put("/desk/orders/" + req.params.id + "/customer", id, function(response, error, status) {
+			if (status != 200) {
+				res.status(500).send();
+				return;
+			} else {
+				callback();
+			}
+		});
+	}
+
+	var createCustomer = function(customer, callback) {
+		customer.profile_id = +process.env.PROFILE_ID
+		api.post("/desk/customers/", customer, function(response, error, status) {
+			if (status != 200) {
+				res.status(500).send();
+				return;
+			} else {
+				assignCartToCustomer(response.id, callback);
+			}
+		});
+	}
+
 	api.get("/desk/orders/" + req.params.id + "/tickets", {}, function(
 		response, error, status) {
 		if (error) {
@@ -194,12 +222,17 @@ exports.payOrderWithBambora = function(req, res) {
 				totalAmount+= response[i].price;
 			}
 
-			console.log(totalAmount);
 
 			if (req.body.amount == totalAmount) {
-				bambora.pay(req.body.amount * 100, req.params.id, function(response) {
-					res.send(response.body);
-				}, "https://" + req.headers.host);
+				createCustomer(req.body.customer, function() {
+					var customer = {
+						phonenumber: req.body.customer.phone,
+						email: req.body.customer.email,
+					}
+					bambora.pay(req.body.amount * 100, req.params.id, customer, function(response) {
+						res.send(response.body);
+					}, "https://" + req.headers.host);
+				});
 			} else {
 				res.status(400).send("400 Bad request");
 			}

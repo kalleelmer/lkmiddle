@@ -1,6 +1,6 @@
 var request = require('request')
 
-exports.pay = function(amount, id, callback, url) {
+exports.pay = function(amount, id, customer, callback, url) {
 
 	var data = {
 		"order": {
@@ -17,10 +17,12 @@ exports.pay = function(amount, id, callback, url) {
 			}],
 		},
 		"instantcaptureamount" : amount,
+		"customer" : customer
 	}
 
 	console.log("Bambora: ");
-	console.log(data);
+	console.log(JSON.stringify(data));
+	console.log();
 
 	var options = {
 		url: 'https://api.v1.checkout.bambora.com/sessions',
