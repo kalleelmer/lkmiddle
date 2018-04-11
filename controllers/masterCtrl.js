@@ -4,6 +4,7 @@ var api = require('../api.js');
 var swish = require('../swish.js');
 var bambora = require('../bambora.js')
 var md5 = require('md5');
+var mail = require("../mail.js")
 
 exports.getShows = function(req, res) {
 
@@ -272,13 +273,37 @@ exports.callback = function(req, res) {
 	concatenatedValues+=callback;
 
 	if (md5(concatenatedValues) == hash) {
+
+		var getOrder = function(callback) {
+			api.get("/desk/orders/" + req.params.id, {}, function(response, error, status) {
+				console.log("ORDER");
+				console.log(response);
+				callback(response);
+			});
+		}
+
+		var getCustomer = function(callback) {
+			api.get("/desk/orders/" + req.query.orderid + "/customer", {}, function(response, error, status) {
+				console.log("KUND");
+				console.log(response);
+				callback(response)
+			});
+		}
+
 		api.post("/desk/orders/" + orderid + "/payments",
-			{method : "cash",
+			{method : "bambora",
 			amount : amount/100,
 			reference : "Kristoffer",
 			profile_id : +process.env.PROFILE_ID
 		}, function(response, error, status) {
 			res.status(status).send();
+
+			getOrder(function(order) {
+				getCustomer(function(customer) {
+					sendConfirmation(customer, order);
+				});
+			});
+
 		});
 	} else {
 		res.status(401).send("Unauthorized");
