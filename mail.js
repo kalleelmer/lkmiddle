@@ -4,7 +4,8 @@ let aws = require('aws-sdk');
 // create Nodemailer SES transporter
 let transporter = nodemailer.createTransport({
     SES: new aws.SES({
-        apiVersion: '2010-12-01'
+        apiVersion: '2010-12-01',
+        region: "eu-west-1"
     })
 });
 
@@ -16,13 +17,7 @@ exports.sendConfirmation = function(customer, order) {
       from: 'noreply@lkticket.net',
       to: customer.email,
       subject: 'Här är ditt karnekvitto',
-      text: 'Wehej! Karnekul!' + order + customer.name,
-      ses: { // optional extra arguments for SendRawEmail
-          Tags: [{
-              Name: 'tag name',
-              Value: 'tag value'
-          }]
-      }
+      text: 'Wehej! Karnekul! För att hämta dina biljetter uppge: '+ order.identifier +' \n https://web-dev.lkticket.net/#/cart/'+ order.id +'/'+ order.identifier,
   };
   console.log(mail);
   transporter.sendMail(mail, (err, info) => {
