@@ -300,7 +300,7 @@ exports.callback = function(req, res) {
 
 			getOrder(function(order) {
 				getCustomer(function(customer) {
-					sendConfirmation(customer, order);
+					mail.sendConfirmation(customer, order);
 				});
 			});
 

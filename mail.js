@@ -16,7 +16,7 @@ var sendConfirmation = function(customer, order) {
       from: 'noreply@lkticket.net',
       to: customer.email,
       subject: 'Här är ditt karnekvitto',
-      text: 'Wehej! Karnekul!' + order,
+      text: 'Wehej! Karnekul!' + order + customer.name,
       ses: { // optional extra arguments for SendRawEmail
           Tags: [{
               Name: 'tag name',
