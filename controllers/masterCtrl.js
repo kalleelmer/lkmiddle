@@ -275,7 +275,7 @@ exports.callback = function(req, res) {
 	if (md5(concatenatedValues) == hash) {
 
 		var getOrder = function(callback) {
-			api.get("/desk/orders/" + req.params.id, {}, function(response, error, status) {
+			api.get("/desk/orders/" + req.query.id, {}, function(response, error, status) {
 				console.log("ORDER");
 				console.log(response);
 				callback(response);

@@ -10,7 +10,7 @@ let transporter = nodemailer.createTransport({
 
 // send some mail
 
-var sendConfirmation = function(customer, order) {
+exports.sendConfirmation = function(customer, order) {
   console.log("Skickar mail");
   var mail = {
       from: 'noreply@lkticket.net',
