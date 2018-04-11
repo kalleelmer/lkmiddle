@@ -25,7 +25,7 @@ exports.sendConfirmation = function(customer, order) {
       }
   };
   transporter.sendMail(mail, (err, info) => {
-      console.log(info.envelope);
-      console.log(info.messageId);
+      console.log(info);
+      console.log(JSON.stringify(info));
   });
 }
