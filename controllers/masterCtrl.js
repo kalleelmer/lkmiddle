@@ -326,12 +326,15 @@ exports.callback = function(req, res) {
 exports.acceptPayment = function(req, res) {
 	res.header("Cache-Control", "no-cache");
 	console.log(req.headers);
-	res.redirect("https://web-dev.lkticket.net/#/thanks");
+	res.redirect("https://web-dev.lkticket.net/#/");
 	res.send();
 }
 
 exports.cancelPayment = function(req, res) {
-
+	res.header("Cache-Control", "no-cache");
+	console.log(req.headers);
+	res.redirect("https://web-dev.lkticket.net/#/denied");
+	res.send();
 }
 
 exports.getPrices = function(req, res) {
