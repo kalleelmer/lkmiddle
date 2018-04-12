@@ -1,0 +1,8 @@
+{
+	"Template": {
+		"TemplateName": "karneMail",
+		"SubjectPart": "Tack för ditt köp, {{name}}!",
+		"HtmlPart": "<html><head></head><body style='font-family:sans-serif; background-color: #390444; '><br><img src='https://www.lundakarnevalen.se/wp-content/themes/Iinal-WPtheme/img/girl.png' style='height:30vh;'><h1 style='text-align:center; color: white;'>Tack för ditt biljettköp {{name}}!</h1><p style='font-size:20px; color:white; text-align: center;'>För att hämta ut dina biljetter ta dig till närmsta biljettbod och visa upp följande kod. <br><br>OBS! Denna koden och länken nedan är det enda som krävs för att hämta ut dina biljetter. Se till att ingen annan får tag i dem. </p><h1 style='color:white; text-align:center'>{{identifier}}</h1><p style='font-size:20px; color:white; text-align: center;'><a style='color: #F7a021' href='https://web-dev.lkticket.net/#/cart/{{id}}/{{identifier}}'>Klicka här för att se dina biljetter<a><p><p style='color: rgb(138, 71, 151); font-size:11px; text-align:center;'>2018 Lundakarnevalen. All rights reserved.</p></body></html>",
+		"TextPart": "Dear {{name}},\r\nYour favorite animal is {{favoriteanimal}}."
+	}
+}
