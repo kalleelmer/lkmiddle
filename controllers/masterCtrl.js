@@ -183,11 +183,27 @@ exports.removeTicket = function(req, res) {
 }
 
 exports.payOrderWithBambora = function(req, res) {
+
+	console.log(req);
 	res.header("Cache-Control", "no-cache");
 
 	if (!req.body.customer.email || !req.body.customer.name || !req.body.customer.phone) {
 		res.status(400).send();
 		return;
+	}
+
+	var checkIdentifier = function(callback) {
+		api.get("/desk/orders/" + req.params.id, {}, function(response, error, status) {
+			if (error) {
+				res.send(error)
+			} else {
+				if (response.identifier == req.query.identifier) {
+					callback();
+				} else {
+					res.status(401).send("Unauthorized");
+				}
+			}
+		});
 	}
 
 	var assignCartToCustomer = function(id, callback) {
@@ -213,33 +229,35 @@ exports.payOrderWithBambora = function(req, res) {
 		});
 	}
 
-	api.get("/desk/orders/" + req.params.id + "/tickets", {}, function(
-		response, error, status) {
-		if (error) {
-			res.send(error)
-		} else {
-
-			var totalAmount = 0;
-
-			for (var i = 0; i < response.length; i++) {
-				totalAmount += response[i].price;
-			}
-
-
-			if (req.body.amount == totalAmount) {
-				createCustomer(req.body.customer, function() {
-					var customer = {
-						phonenumber: req.body.customer.phone,
-						email: req.body.customer.email,
-					}
-					bambora.pay(req.body.amount * 100, req.params.id, customer, function(response) {
-						res.send(response.body);
-					}, "https://" + req.headers.host);
-				});
+	checkIdentifier(function() {
+		api.get("/desk/orders/" + req.params.id + "/tickets", {}, function(
+			response, error, status) {
+			if (error) {
+				res.send(error)
 			} else {
-				res.status(400).send("400 Bad request");
+
+				var totalAmount = 0;
+
+				for (var i = 0; i < response.length; i++) {
+					totalAmount += response[i].price;
+				}
+
+
+				if (req.body.amount == totalAmount) {
+					createCustomer(req.body.customer, function() {
+						var customer = {
+							phonenumber: req.body.customer.phone,
+							email: req.body.customer.email,
+						}
+						bambora.pay(req.body.amount * 100, req.params.id, req.query.identifier, customer, function(response) {
+							res.send(response.body);
+						}, "https://" + req.headers.host);
+					});
+				} else {
+					res.status(400).send("400 Bad request");
+				}
 			}
-		}
+		});
 	});
 }
 
@@ -329,7 +347,7 @@ exports.callback = function(req, res) {
 exports.acceptPayment = function(req, res) {
 	res.header("Cache-Control", "no-cache");
 	console.log(req.headers);
-	res.redirect("https://web-dev.lkticket.net/#/");
+	res.redirect("https://web-dev.lkticket.net/#/cart/" + req.query.id + "/" + req.query.identifier);
 	res.send();
 }
 

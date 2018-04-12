@@ -1,6 +1,6 @@
 var request = require('request')
 
-exports.pay = function(amount, id, customer, callback, url) {
+exports.pay = function(amount, id, identifier, customer, callback, url) {
 
 	var data = {
 		"order": {
@@ -9,7 +9,7 @@ exports.pay = function(amount, id, customer, callback, url) {
 			"currency": "SEK",
 		},
 		"url": {
-			"accept": url + "/accept",
+			"accept": url + "/accept?id=" + id + "&identifier=" + identifier,
 			"immediateredirecttoaccept":1,
 			"cancel": url + "/cancel",
 			"callbacks": [{
