@@ -287,7 +287,7 @@ exports.callback = function(req, res) {
 		}
 
 		var checkAmount = function(callback) {
-			api.get("/desk/orders/" + req.params.id + "/tickets", {}, function(
+			api.get("/desk/orders/" + req.query.orderid + "/tickets", {}, function(
 				response, error, status) {
 				var totalAmount = 0;
 
