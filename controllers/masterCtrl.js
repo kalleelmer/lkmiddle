@@ -246,7 +246,7 @@ exports.payOrderWithBambora = function(req, res) {
 exports.callback = function(req, res) {
 	res.header("Cache-Control", "no-cache");
 	console.log("callback init");
-	console.log(req.query);
+	console.log(req);
 
 	var amount = req.query.amount;
 	var orderid = req.query.orderid;
@@ -294,6 +294,9 @@ exports.callback = function(req, res) {
 				for (var i = 0; i < response.length; i++) {
 					totalAmount += response[i].price;
 				}
+
+				console.log(totalAmount);
+				console.log(amount);
 
 				if (amount == totalAmount) {
 					callback();
