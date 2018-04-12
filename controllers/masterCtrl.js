@@ -298,7 +298,7 @@ exports.callback = function(req, res) {
 				console.log(totalAmount);
 				console.log(amount);
 
-				if (amount == totalAmount) {
+				if (amount/100 == totalAmount) {
 					callback();
 				} else {
 					res.status(400).send("400 Bad request");
