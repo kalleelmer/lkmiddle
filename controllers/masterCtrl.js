@@ -46,7 +46,7 @@ exports.getPerformance = function(req, res) {
 		if (error) {
 			res.send(error)
 		} else {
-			api.get("/desk/performances/" + req.params.id + "/profiles/" + process.env.PROFILE_ID + "/availability",{}, function(response2, error2, status2) {
+			api.get("/desk/performances/" + req.params.id + "/profiles/" + process.env.PROFILE_ID + "/availability", {}, function(response2, error2, status2) {
 				if (error) {
 					res.send(error);
 				} else {
@@ -222,7 +222,7 @@ exports.payOrderWithBambora = function(req, res) {
 			var totalAmount = 0;
 
 			for (var i = 0; i < response.length; i++) {
-				totalAmount+= response[i].price;
+				totalAmount += response[i].price;
 			}
 
 
@@ -253,9 +253,7 @@ exports.callback = function(req, res) {
 	var hash = req.query.hash;
 	var callback = process.env.BAMBORA_CALLBACK_TOKEN;
 
-	// TODO: Ev kolla amount mot Core
-
-	if(!amount || !orderid|| !callback){
+	if (!amount || !orderid || !callback) {
 		res.status(401).send("Unauthorized");
 		return;
 	}
@@ -264,13 +262,11 @@ exports.callback = function(req, res) {
 
 	for (var key in req.query) {
 		if (key != "hash") {
-			concatenatedValues+=req.query[key];
+			concatenatedValues += req.query[key];
 		}
 	}
 
-	console.log(concatenatedValues);
-
-	concatenatedValues+=callback;
+	concatenatedValues += callback;
 
 	if (md5(concatenatedValues) == hash) {
 
@@ -290,25 +286,41 @@ exports.callback = function(req, res) {
 			});
 		}
 
-		api.post("/desk/orders/" + orderid + "/payments",
-			{method : "bambora",
-			amount : amount/100,
-			reference : "Kristoffer",
-			profile_id : +process.env.PROFILE_ID
-		}, function(response, error, status) {
-			res.status(status).send();
+		var checkAmount = function(callback) {
+			api.get("/desk/orders/" + req.params.id + "/tickets", {}, function(
+				response, error, status) {
+				var totalAmount = 0;
 
-			getOrder(function(order) {
-				getCustomer(function(customer) {
-					mail.sendConfirmation(customer, order);
+				for (var i = 0; i < response.length; i++) {
+					totalAmount += response[i].price;
+				}
+
+				if (amount == totalAmount) {
+					callback();
+				} else {
+					res.status(400).send("400 Bad request");
+				}
+			});
+		}
+
+		checkAmount(function() {
+			api.post("/desk/orders/" + orderid + "/payments", {
+				method: "bambora",
+				amount: amount / 100,
+				reference: "Kristoffer",
+				profile_id: +process.env.PROFILE_ID
+			}, function(response, error, status) {
+				res.status(status).send();
+				getOrder(function(order) {
+					getCustomer(function(customer) {
+						mail.sendConfirmation(customer, order);
+					});
 				});
 			});
-
 		});
 	} else {
 		res.status(401).send("Unauthorized");
 	}
-
 }
 
 exports.acceptPayment = function(req, res) {
