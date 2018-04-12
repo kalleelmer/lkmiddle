@@ -18,7 +18,7 @@ exports.sendConfirmation = function(customer, order) {
       from: 'noreply@lkticket.net',
       to: customer.email,
       subject: 'Här är ditt karnekvitto',
-      html: html.replace("{{name}}", "Kristoffer").replace(/{{id}}/g, 123).replace(/{{identifier}}/g, "jkasdfhjker")
+      html: html.replace("{{name}}", customer.name).replace(/{{id}}/g, order.id).replace(/{{identifier}}/g, order.identifier)
   };
   console.log(mail);
   transporter.sendMail(mail, (err, info) => {
