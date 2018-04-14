@@ -347,14 +347,14 @@ exports.callback = function(req, res) {
 exports.acceptPayment = function(req, res) {
 	res.header("Cache-Control", "no-cache");
 	console.log(req.headers);
-	res.redirect("https://web-dev.lkticket.net/#/cart/" + req.query.id + "/" + req.query.identifier);
+	res.redirect("https://" + process.env.BAMBORA_CALLBACK_URL + "/#/cart/" + req.query.id + "/" + req.query.identifier);
 	res.send();
 }
 
 exports.cancelPayment = function(req, res) {
 	res.header("Cache-Control", "no-cache");
 	console.log(req.headers);
-	res.redirect("https://web-dev.lkticket.net/#/denied");
+	res.redirect("https://" + process.env.BAMBORA_CALLBACK_URL + "/#/denied");
 	res.send();
 }
 
