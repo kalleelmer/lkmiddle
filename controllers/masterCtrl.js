@@ -328,7 +328,7 @@ exports.callback = function(req, res) {
 			api.post("/desk/orders/" + orderid + "/payments", {
 				method: "bambora",
 				amount: amount / 100,
-				reference: "Kristoffer",
+				reference: "",
 				profile_id: +process.env.PROFILE_ID
 			}, function(response, error, status) {
 				res.status(status).send();
@@ -347,14 +347,14 @@ exports.callback = function(req, res) {
 exports.acceptPayment = function(req, res) {
 	res.header("Cache-Control", "no-cache");
 	console.log(req.headers);
-	res.redirect("https://" + process.env.BAMBORA_CALLBACK_URL + "/#/cart/" + req.query.id + "/" + req.query.identifier);
+	res.redirect("https://" + process.env.BAMBORA_CALLBACK_HOST + "/#/cart/" + req.query.id + "/" + req.query.identifier);
 	res.send();
 }
 
 exports.cancelPayment = function(req, res) {
 	res.header("Cache-Control", "no-cache");
 	console.log(req.headers);
-	res.redirect("https://" + process.env.BAMBORA_CALLBACK_URL + "/#/denied");
+	res.redirect("https://" + process.env.BAMBORA_CALLBACK_HOST + "/#/denied");
 	res.send();
 }
 
