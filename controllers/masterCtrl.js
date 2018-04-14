@@ -6,9 +6,16 @@ var bambora = require('../bambora.js')
 var md5 = require('md5');
 var mail = require("../mail.js")
 
+function getProfileID(req) {
+	return typeof req.query.profile_id === "undefined"
+		? process.env.PROFILE_ID
+		: req.query.profile_id;
+}
+
+
 exports.getShows = function(req, res) {
 
-	api.get("/desk/profiles/" + process.env.PROFILE_ID + "/shows", {}, function(response, error, status) {
+	api.get("/desk/profiles/" + getProfileID(req) + "/shows", {}, function(response, error, status) {
 		if (error) {
 			res.send(error)
 		} else {
@@ -46,7 +53,7 @@ exports.getPerformance = function(req, res) {
 		if (error) {
 			res.send(error)
 		} else {
-			api.get("/desk/performances/" + req.params.id + "/profiles/" + process.env.PROFILE_ID + "/availability", {}, function(response2, error2, status2) {
+			api.get("/desk/performances/" + req.params.id + "/profiles/" + getProfileID(req) + "/availability", {}, function(response2, error2, status2) {
 				if (error) {
 					res.send(error);
 				} else {
