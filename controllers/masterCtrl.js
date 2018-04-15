@@ -7,9 +7,11 @@ var md5 = require('md5');
 var mail = require("../mail.js")
 
 function getProfileID(req) {
-	return typeof req.query.profile_id === "undefined"
-		? process.env.PROFILE_ID
-		: req.query.profile_id;
+	if(req.query.profile_id) {
+		return req.query.profile_id;
+	} else {
+		return process.env.PROFILE_ID;
+	}
 }
 
 
