@@ -15,9 +15,9 @@ var html = '<!DOCTYPE html><html lang="sv"><head><title>Bokningsbekräftelse - L
 exports.sendConfirmation = function(customer, order) {
   console.log("Skickar mail");
   var mail = {
-      from: 'noreply@lkticket.net',
+      from: "Lundakarnevalen 2018 <noreply@lkticket.net>",
       to: customer.email,
-      subject: 'Din bokningsbekräftelse - Lundakarnevalen 2018',
+      subject: "Dina biljetter",
       html: html.replace("{{name}}", customer.name).replace(/{{id}}/g, order.id).replace(/{{identifier}}/g, order.identifier)
   };
   console.log(mail);
