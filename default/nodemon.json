@@ -2,10 +2,12 @@
 	"env": {
 		"API_URL": "https://api-dev.lkticket.net",
 		"API_TOKEN": "",
-		"SWISH_PASSWORD": "",
-		"SWISH_CALLBACK": "https://www.malmoseglarskola.se",
-		"SWISH_MESSAGE": "Lundakarnevalen",
-		"SWISH_NUMBER": "1231181189",
-		"BAMBORA_TOKEN": ""
+		"BAMBORA_TOKEN": "",
+		"BAMBORA_CALLBACK_TOKEN": "",
+		"BAMBORA_CALLBACK_HOST": "",
+		"AWS_ACCESS_KEY_ID": "",
+		"AWS_SECRET_ACCESS_KEY": "",
+		"PROFILE_ID": 4,
+		"LOCATION_ID": 8
 	}
 }
