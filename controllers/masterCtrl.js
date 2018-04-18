@@ -279,6 +279,8 @@ exports.callback = function(req, res) {
 	var orderid = req.query.orderid;
 	var hash = req.query.hash;
 	var callback = process.env.BAMBORA_CALLBACK_TOKEN;
+	var reference = req.query.reference;
+	var txnid = req.query.txnid;
 
 	if (!amount || !orderid || !callback) {
 		res.status(401).send("Unauthorized");
@@ -337,7 +339,7 @@ exports.callback = function(req, res) {
 			api.post("/desk/orders/" + orderid + "/payments", {
 				method: "bambora",
 				amount: amount / 100,
-				reference: "",
+				reference: "ref: " + reference + "txnid: " + txnid,
 				profile_id: +process.env.PROFILE_ID
 			}, function(response, error, status) {
 				res.status(status).send();
