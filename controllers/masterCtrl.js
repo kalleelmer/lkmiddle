@@ -7,17 +7,17 @@ var md5 = require('md5');
 var mail = require("../mail.js")
 
 function getProfileID(req) {
-	if(req.query.profile_id) {
+	if (req.query.profile_id) {
 		return req.query.profile_id;
 	} else {
 		return process.env.PROFILE_ID;
 	}
 }
 
-
 exports.getShows = function(req, res) {
 
-	api.get("/desk/profiles/" + getProfileID(req) + "/shows", {}, function(response, error, status) {
+	api.get("/desk/profiles/" + getProfileID(req) + "/shows", {}, function(
+		response, error, status) {
 		if (error) {
 			res.send(error)
 		} else {
@@ -25,11 +25,11 @@ exports.getShows = function(req, res) {
 		}
 	});
 
-
 };
 
 exports.getShow = function(req, res) {
-	api.get("/desk/shows/" + req.params.id, {}, function(response, error, status) {
+	api.get("/desk/shows/" + req.params.id, {}, function(response, error,
+		status) {
 		if (error) {
 			res.send(error)
 		} else {
@@ -50,12 +50,14 @@ exports.getPerformances = function(req, res) {
 }
 
 exports.getPerformance = function(req, res) {
-	api.get("/desk/performances/" + req.params.id, {}, function(
-		response, error, status) {
+	api.get("/desk/performances/" + req.params.id, {}, function(response,
+		error, status) {
 		if (error) {
 			res.send(error)
 		} else {
-			api.get("/desk/performances/" + req.params.id + "/profiles/" + getProfileID(req) + "/availability", {}, function(response2, error2, status2) {
+			api.get("/desk/performances/" + req.params.id + "/profiles/"
+				+ getProfileID(req) + "/availability", {}, function(response2,
+				error2, status2) {
 				if (error) {
 					res.send(error);
 				} else {
@@ -91,18 +93,20 @@ exports.getRates = function(req, res) {
 
 exports.createOrder = function(req, res) {
 	res.header("Cache-Control", "no-cache");
-	api.get("/desk/orders/create?location_id=" + process.env.LOCATION_ID, {}, function(response, error, status) {
-		if (error) {
-			res.send(error)
-		} else {
-			res.send(response);
-		}
-	});
+	api.get("/desk/orders/create?location_id=" + process.env.LOCATION_ID, {},
+		function(response, error, status) {
+			if (error) {
+				res.send(error)
+			} else {
+				res.send(response);
+			}
+		});
 }
 
 exports.getOrder = function(req, res) {
 	res.header("Cache-Control", "no-cache");
-	api.get("/desk/orders/" + req.params.id, {}, function(response, error, status) {
+	api.get("/desk/orders/" + req.params.id, {}, function(response, error,
+		status) {
 		if (error) {
 			res.send(error)
 		} else {
@@ -117,19 +121,20 @@ exports.getOrder = function(req, res) {
 
 exports.getTicket = function(req, res) {
 	res.header("Cache-Control", "no-cache");
-	api.get("/desk/orders/" + req.params.id, {}, function(response, error, status) {
+	api.get("/desk/orders/" + req.params.id, {}, function(response, error,
+		status) {
 		if (error) {
 			res.send(error)
 		} else {
 			if (response.identifier == req.query.identifier) {
-				api.get("/desk/orders/" + req.params.id + "/tickets", {}, function(
-					response, error, status) {
-					if (error) {
-						res.send(error)
-					} else {
-						res.send(response);
-					}
-				});
+				api.get("/desk/orders/" + req.params.id + "/tickets", {},
+					function(response, error, status) {
+						if (error) {
+							res.send(error)
+						} else {
+							res.send(response);
+						}
+					});
 			} else {
 				res.status(401).send("Unauthorized");
 			}
@@ -141,7 +146,8 @@ exports.getTicket = function(req, res) {
 exports.postTicket = function(req, res) {
 	req.body.profile_id = +process.env.PROFILE_ID;
 
-	api.get("/desk/orders/" + req.params.id, {}, function(response, error, status) {
+	api.get("/desk/orders/" + req.params.id, {}, function(response, error,
+		status) {
 		if (error) {
 			res.send(error)
 		} else {
@@ -149,8 +155,9 @@ exports.postTicket = function(req, res) {
 
 				req.body.location_id = process.env.LOCATION_ID;
 
-				api.post("/desk/orders/" + req.params.id + "/tickets", req.body, function(
-					response, error, status) {
+				api.post("/desk/orders/" + req.params.id
+					+ "/tickets?block_free=true", req.body, function(response,
+					error, status) {
 					if (error) {
 						res.send(error)
 					} else {
@@ -170,12 +177,16 @@ exports.postTicket = function(req, res) {
 
 exports.removeTicket = function(req, res) {
 	res.header("Cache-Control", "no-cache");
-	api.get("/desk/orders/" + req.params.id, {}, function(response, error, status) {
+	api.get("/desk/orders/" + req.params.id, {}, function(response, error,
+		status) {
 		if (error) {
 			res.send(error)
 		} else {
 			if (response.identifier == req.query.identifier) {
-				api.deleet("/desk/orders/" + req.params.id + "/tickets/" + req.params.ticket + "?location_id=" + process.env.LOCATION_ID, {}, function(response, error, status) {
+				api.deleet("/desk/orders/" + req.params.id + "/tickets/"
+					+ req.params.ticket + "?location_id="
+					+ process.env.LOCATION_ID, {}, function(response, error,
+					status) {
 					if (error) {
 						res.send(error)
 					} else {
@@ -196,13 +207,15 @@ exports.payOrderWithBambora = function(req, res) {
 	console.log(req);
 	res.header("Cache-Control", "no-cache");
 
-	if (!req.body.customer.email || !req.body.customer.name || !req.body.customer.phone) {
+	if (!req.body.customer.email || !req.body.customer.name
+		|| !req.body.customer.phone) {
 		res.status(400).send();
 		return;
 	}
 
 	var checkIdentifier = function(callback) {
-		api.get("/desk/orders/" + req.params.id, {}, function(response, error, status) {
+		api.get("/desk/orders/" + req.params.id, {}, function(response, error,
+			status) {
 			if (error) {
 				res.send(error)
 			} else {
@@ -216,7 +229,8 @@ exports.payOrderWithBambora = function(req, res) {
 	}
 
 	var assignCartToCustomer = function(id, callback) {
-		api.put("/desk/orders/" + req.params.id + "/customer?location_id=" + process.env.LOCATION_ID, id, function(response, error, status) {
+		api.put("/desk/orders/" + req.params.id + "/customer?location_id="
+			+ process.env.LOCATION_ID, id, function(response, error, status) {
 			if (status != 200) {
 				res.status(500).send();
 				return;
@@ -228,14 +242,15 @@ exports.payOrderWithBambora = function(req, res) {
 
 	var createCustomer = function(customer, callback) {
 		customer.profile_id = +process.env.PROFILE_ID
-		api.post("/desk/customers/", customer, function(response, error, status) {
-			if (status != 200) {
-				res.status(500).send();
-				return;
-			} else {
-				assignCartToCustomer(response.id, callback);
-			}
-		});
+		api.post("/desk/customers/", customer,
+			function(response, error, status) {
+				if (status != 200) {
+					res.status(500).send();
+					return;
+				} else {
+					assignCartToCustomer(response.id, callback);
+				}
+			});
 	}
 
 	checkIdentifier(function() {
@@ -251,16 +266,16 @@ exports.payOrderWithBambora = function(req, res) {
 					totalAmount += response[i].price;
 				}
 
-
 				if (req.body.amount == totalAmount) {
 					createCustomer(req.body.customer, function() {
 						var customer = {
-							phonenumber: req.body.customer.phone,
-							email: req.body.customer.email,
+							phonenumber : req.body.customer.phone,
+							email : req.body.customer.email,
 						}
-						bambora.pay(req.body.amount * 100, req.params.id, req.query.identifier, customer, function(response) {
-							res.send(response.body);
-						}, "https://" + req.headers.host);
+						bambora.pay(req.body.amount * 100, req.params.id,
+							req.query.identifier, customer, function(response) {
+								res.send(response.body);
+							}, "https://" + req.headers.host);
 					});
 				} else {
 					res.status(400).send("400 Bad request");
@@ -289,7 +304,7 @@ exports.callback = function(req, res) {
 
 	var concatenatedValues = "";
 
-	for (var key in req.query) {
+	for ( var key in req.query) {
 		if (key != "hash") {
 			concatenatedValues += req.query[key];
 		}
@@ -300,7 +315,8 @@ exports.callback = function(req, res) {
 	if (md5(concatenatedValues) == hash) {
 
 		var getOrder = function(callback) {
-			api.get("/desk/orders/" + req.query.orderid, {}, function(response, error, status) {
+			api.get("/desk/orders/" + req.query.orderid, {}, function(response,
+				error, status) {
 				console.log("ORDER");
 				console.log(response);
 				callback(response);
@@ -308,40 +324,41 @@ exports.callback = function(req, res) {
 		}
 
 		var getCustomer = function(callback) {
-			api.get("/desk/orders/" + req.query.orderid + "/customer", {}, function(response, error, status) {
-				console.log("KUND");
-				console.log(response);
-				callback(response)
-			});
+			api.get("/desk/orders/" + req.query.orderid + "/customer", {},
+				function(response, error, status) {
+					console.log("KUND");
+					console.log(response);
+					callback(response)
+				});
 		}
 
 		var checkAmount = function(callback) {
-			api.get("/desk/orders/" + req.query.orderid + "/tickets", {}, function(
-				response, error, status) {
-				var totalAmount = 0;
+			api.get("/desk/orders/" + req.query.orderid + "/tickets", {},
+				function(response, error, status) {
+					var totalAmount = 0;
 
-				for (var i = 0; i < response.length; i++) {
-					totalAmount += response[i].price;
-				}
+					for (var i = 0; i < response.length; i++) {
+						totalAmount += response[i].price;
+					}
 
-				console.log(totalAmount);
-				console.log(amount);
+					console.log(totalAmount);
+					console.log(amount);
 
-				if (amount/100 == totalAmount) {
-					callback();
-				} else {
-					res.status(400).send("400 Bad request");
-				}
-			});
+					if (amount / 100 == totalAmount) {
+						callback();
+					} else {
+						res.status(400).send("400 Bad request");
+					}
+				});
 		}
 
 		checkAmount(function() {
 			api.post("/desk/orders/" + orderid + "/payments", {
-				method: "bambora",
-				amount: amount / 100,
-				reference: "ref: " + reference + "txnid: " + txnid,
-				profile_id: +process.env.PROFILE_ID,
-				location_id: +process.env.LOCATION_ID
+				method : "bambora",
+				amount : amount / 100,
+				reference : "ref: " + reference + "txnid: " + txnid,
+				profile_id : +process.env.PROFILE_ID,
+				location_id : +process.env.LOCATION_ID
 			}, function(response, error, status) {
 				res.status(status).send();
 				getOrder(function(order) {
@@ -359,7 +376,8 @@ exports.callback = function(req, res) {
 exports.acceptPayment = function(req, res) {
 	res.header("Cache-Control", "no-cache");
 	console.log(req.headers);
-	res.redirect("https://" + process.env.BAMBORA_CALLBACK_HOST + "/#/cart/" + req.query.id + "/" + req.query.identifier);
+	res.redirect("https://" + process.env.BAMBORA_CALLBACK_HOST + "/#/cart/"
+		+ req.query.id + "/" + req.query.identifier);
 	res.send();
 }
 
@@ -376,8 +394,15 @@ exports.getPrices = function(req, res) {
 		if (error) {
 			res.send(error)
 		} else {
-
-			res.send(response);
+			var prices = [];
+			// Filter out complimentary tickets
+			for (var i = 0; i < response.length; i++) {
+				var entry = response[i];
+				if (entry.price > 0) {
+					prices.push(entry);
+				}
+			}
+			res.send(prices);
 		}
 	});
 }
