@@ -91,7 +91,7 @@ exports.getRates = function(req, res) {
 
 exports.createOrder = function(req, res) {
 	res.header("Cache-Control", "no-cache");
-	api.get("/desk/orders/create", {}, function(response, error, status) {
+	api.get("/desk/orders/create?location_id=" + process.env.LOCATION_ID, {}, function(response, error, status) {
 		if (error) {
 			res.send(error)
 		} else {
@@ -175,7 +175,7 @@ exports.removeTicket = function(req, res) {
 			res.send(error)
 		} else {
 			if (response.identifier == req.query.identifier) {
-				api.deleet("/desk/orders/" + req.params.id + "/tickets/" + req.params.ticket, {}, function(response, error, status) {
+				api.deleet("/desk/orders/" + req.params.id + "/tickets/" + req.params.ticket + "?location_id=" + process.env.LOCATION_ID, {}, function(response, error, status) {
 					if (error) {
 						res.send(error)
 					} else {
@@ -216,7 +216,7 @@ exports.payOrderWithBambora = function(req, res) {
 	}
 
 	var assignCartToCustomer = function(id, callback) {
-		api.put("/desk/orders/" + req.params.id + "/customer", id, function(response, error, status) {
+		api.put("/desk/orders/" + req.params.id + "/customer?location_id=" + process.env.LOCATION_ID, id, function(response, error, status) {
 			if (status != 200) {
 				res.status(500).send();
 				return;
@@ -340,7 +340,8 @@ exports.callback = function(req, res) {
 				method: "bambora",
 				amount: amount / 100,
 				reference: "ref: " + reference + "txnid: " + txnid,
-				profile_id: +process.env.PROFILE_ID
+				profile_id: +process.env.PROFILE_ID,
+				location_id: +process.env.LOCATION_ID
 			}, function(response, error, status) {
 				res.status(status).send();
 				getOrder(function(order) {
